@@ -1,0 +1,139 @@
+<html>
+<head>
+  <meta charset="utf-8"> 
+  <title>ForceReload Extension Options</title>
+  <!-- <link href="icon16.ico" rel="shortcut icon"> -->
+  <style type='text/css'>
+   html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-family: lucida, tahoma, arial, verdana, sans-serif;
+   }
+   #header {
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff555), to(#fbde3a));
+    border-color: #ddd;
+    border-style: solid;
+    border-width: 0 1px 1px 1px;
+    padding: 10px;
+    text-shadow: 0 1px 0 #fff;
+   }
+   #header h1 {
+    height: 80px;
+    background: url(icon128.png) 0 3px no-repeat;
+    padding-top:   50px;
+    padding-left: 150px;
+   }
+   #body {
+    padding: 10px;
+   }
+   #about {
+     padding-top: 10px;
+     width: 75%;
+     font-size: 16pt;
+   }
+   #author {
+     padding-top: 10px;
+     font-size: 12pt;
+   }
+   #options {
+    border: solid #ddd 1px;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #edece1;
+   }
+   .labelExtra {
+     font-size: 10pt;
+     font-color: #aaa;
+     font-style: italic;
+     width: 50%;
+     margin-left: 25px;
+   }
+   #status {
+     margin-top: 30px;
+     font-weight: bold;
+     font-size: 14pt;
+     color: #ab280e;
+   }
+  </style>
+
+<script type="text/javascript">
+
+// Saves options to localStorage.
+function save_options() {
+  var cbox = document.getElementById("interceptCtrlF5");
+  localStorage["interceptCtrlF5"] = cbox.checked ? "1" : "";
+
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  if (status) {
+    status.innerHTML = "Options Saved.";
+    setTimeout(function() {
+      status.innerHTML = "&nbsp;";
+    }, 750);
+  }
+}
+
+// Restores select box state to saved value from localStorage.
+function restore_options() {
+  var cbox = document.getElementById("interceptCtrlF5");
+  var iOpt = localStorage["interceptCtrlF5"];
+  cbox.checked = (iOpt === "1");
+}
+
+</script>
+
+</head>
+
+<body onload="restore_options()">
+ 
+<div id="header"> 
+    <h1>Force Reload Options</h1> 
+</div> 
+
+<div id="body"> 
+  <div id='about'>
+    <p>ForceReload is a minimal extension that hard reloads the current tab to overcome caching issues
+    when using Developer Tools for Google Chrome™.</p>
+    <p>It does this by closing the tab and opening a new one to replace it - this seems to convince
+    the browser to reload resources properly.</p>
+    <p>See <a target='_blank' href='http://code.google.com/p/chromium/issues/detail?id=8742'>this bug report</a>
+    for examples of how this affects people.</p>
+  </div>
+
+  <div id='options'>
+    <h1>User options</h1>
+    <div id="controls"> 
+      <p> 
+        <input type="checkbox" id="interceptCtrlF5"/> 
+        <label for="interceptCtrlF5">Intercept Ctrl-F5 for ForceReload</label> 
+        <div class='labelExtra'>By default, the extension only reacts to the toolbar button,
+          but if you want it will also react to the Ctrl-F5 keystroke thereby over-riding
+          the default <em>reload all</em> action.
+        </div>
+      </p> 
+    </div>
+  
+    <p></p>
+
+    <div id='status'>&nbsp;</div>
+
+    <button onclick="save_options()">Save</button>
+  
+  </div>
+
+  <div id='author'>
+    <p>Written by Tim Meadowcroft -- <a target='_blank'href='http://schmerg.com'>http://schmerg.com</a></p>
+    <p>The Chrome Web Store requires a logo as well as a toolbar button, so I'm grateful to
+      newmooon for the icons which are taken from the
+      <a target='_blank' href="http://code.google.com/p/ultimate-gnome/">Ultimate Gnome icon theme</a>.</p>
+  </div>
+
+</div>
+
+<div id="footer"> 
+</div> 
+
+</body>
+</html>

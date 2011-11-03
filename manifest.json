@@ -1,0 +1,23 @@
+{
+  "name": "Force Reload",
+  "version": "1.2",
+  "description": "A minimal extension that hard reloads the current tab to overcome caching issues when using Developer Tools for Google Chrome™",
+  "homepage_url": "http://schmerg.com",
+  "icons": {
+      "128": "icon128.png",
+      "16":  "icon16.png"
+  },
+  "browser_action": {
+    "default_icon": "icon128.png",
+    "default_title": "Hard refresh the page by closing the tab and opening a new tab to replace it"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "background_page": "background.html",
+  "content_scripts": [{
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["keys.js"]
+  }],
+  "options_page": "options.html"
+}

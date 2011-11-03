@@ -1,0 +1,49 @@
+<html>
+<head>
+<script>
+//----------------------------------------------------------------------
+// ForceReload extension for Google Chrome
+// Fix for bug http://code.google.com/p/chromium/issues/detail?id=8742
+//----------------------------------------------------------------------
+// Author: Tim Meadowcroft -- http://schmerg.com -- 2011
+//----------------------------------------------------------------------
+var megaReloadTab = function(tab){
+    var currUrl = tab.url, currIndex = tab.index, currId = tab.id;
+
+    // if we make the new tab with the same URL (ie pass the url to the create call)
+    // then we seem to get the same cache issues, but if we let the tab make itself
+    // first and THEN go to the URL, it seems better....
+    // We make a new empty tab before removing the old one so that, if this is the
+    // only tab open, we don't close the browser itself :)
+    chrome.tabs.create({ index: currIndex},
+                       function(newtab) {
+                           chrome.tabs.remove(currId, function() {
+                               chrome.tabs.update(newtab.id, { url: currUrl });
+                               console.log("Made new tab for "+currUrl);
+                           });
+                       });
+};
+
+// On click of our toolbar button, reload the current tab
+chrome.browserAction.onClicked.addListener(function() {
+  console.log("Chrome-Force-Reload triggered by browser button");
+  chrome.tabs.getSelected(undefined, megaReloadTab);
+});
+
+// We've also inserted a small key listener into each page - reload any page
+// where it intercepts the hard refresh call
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+  var interceptCtrlF5 = Boolean(localStorage["interceptCtrlF5"]);
+  if (request.rtype && request.rtype == "refresh" &&
+      sender.tab &&
+      (request.ctrl && interceptCtrlF5)) {
+    console.log("Chrome-Force-Reload triggered by content page");
+    megaReloadTab(sender.tab);
+  }
+});
+
+console.log("Background.html for Chrome-Force-Reload loaded");
+
+</script>
+</head>
+</html>
